@@ -61,7 +61,7 @@ async function pickDoctorForSession(db, { requestedDoctorId, department }) {
  * Assigns an online doctor and creates a shared Firestore signalling document.
  * @returns {Promise<Object>} Session object with channelName and token
  */
-async function createSession({ doctorId, userId, department, severity, patientName }) {
+async function createSession({ doctorId, userId, department, severity, patientName, isEmergency = false }) {
   const db = getFirestore();
 
   const assignedDoctor = await pickDoctorForSession(db, {
@@ -90,6 +90,7 @@ async function createSession({ doctorId, userId, department, severity, patientNa
     department: String(department || 'general').toLowerCase(),
     severity: String(severity || 'medium').toLowerCase(),
     status: 'waiting',
+    isEmergency,
     createdAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 min
   };

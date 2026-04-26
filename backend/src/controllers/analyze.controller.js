@@ -22,7 +22,8 @@ async function analyze(req, res, next) {
 
     if (!validSeverities.includes(result.severity)) result.severity = 'medium';
     if (!validActions.includes(result.action)) result.action = 'consult';
-    if (!result.department) result.department = 'general';
+    if (!result.recommended_specialty) result.recommended_specialty = 'General';
+    if (typeof result.severity_score !== 'number') result.severity_score = 5;
 
     return res.json({ success: true, ...result });
   } catch (err) {
@@ -31,7 +32,8 @@ async function analyze(req, res, next) {
       return res.json({
         success: true,
         severity: 'medium',
-        department: 'general',
+        severity_score: 5,
+        recommended_specialty: 'General',
         action: 'consult',
         explanation: 'Unable to fully analyse symptoms. Please consult a doctor.',
       });

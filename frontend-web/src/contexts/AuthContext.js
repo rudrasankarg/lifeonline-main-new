@@ -34,14 +34,12 @@ function mapFirebaseAuthError(err) {
 async function setDoctorPresence(user, available) {
   if (!user?.uid) return;
 
-  const specialty = String(process.env.NEXT_PUBLIC_DOCTOR_SPECIALTY || 'general').toLowerCase();
-
+  // Only update heartbeat and basic info, do not overwrite specialties/experience
   await setDoc(doc(db, 'doctorPresence', user.uid), {
     uid: user.uid,
     name: user.displayName || user.email || 'Doctor',
     email: user.email || '',
     photoURL: user.photoURL || null,
-    specialties: [specialty],
     available,
     lastSeenAt: serverTimestamp(),
   }, { merge: true });

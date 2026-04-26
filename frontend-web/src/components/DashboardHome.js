@@ -69,7 +69,19 @@ export default function DashboardHome({ user }) {
     const unsub = onSnapshot(q, (snap) => {
       const docs = snap.docs
         .map((d) => ({ id: d.id, ...d.data() }))
-        .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt));
+        .sort((a, b) => {
+          // 1. Emergency SOS Bypass
+          if (a.isEmergency && !b.isEmergency) return -1;
+          if (!a.isEmergency && b.isEmergency) return 1;
+
+          // 2. Smart Queuing by AI Severity Score (higher = prioritized)
+          const scoreA = a.severity_score || 0;
+          const scoreB = b.severity_score || 0;
+          if (scoreA !== scoreB) return scoreB - scoreA;
+
+          // 3. Fallback to FIFO
+          return toMillis(a.createdAt) - toMillis(b.createdAt);
+        });
 
       setSessions(docs);
 
@@ -105,9 +117,9 @@ export default function DashboardHome({ user }) {
   const greetTime = new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening';
 
   const statItems = [
-    { label: 'Total Sessions', value: stats.total,     icon: <IconBarChart />, color: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE' },
-    { label: 'Active',         value: stats.waiting,   icon: <IconClock />,    color: '#D97706', bg: '#FFFBEB', border: '#FDE68A' },
-    { label: 'Completed',      value: stats.completed, icon: <IconCheck />,    color: '#16A34A', bg: '#F0FDF4', border: '#BBF7D0' },
+    { label: 'Total Sessions', value: stats.total,     color: '#0D9488', bg: '#F0FDFA', border: '#CCFBF1' },
+    { label: 'Active',         value: stats.waiting,   color: '#0D9488', bg: '#F0FDFA', border: '#CCFBF1' },
+    { label: 'Completed',      value: stats.completed, color: '#0D9488', bg: '#F0FDFA', border: '#CCFBF1' },
   ];
 
   return (
@@ -136,16 +148,6 @@ export default function DashboardHome({ user }) {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
               <span style={{ color: '#64748B', fontSize: '0.8125rem', fontWeight: 500 }}>{s.label}</span>
-              <div style={{
-                width: 36, height: 36,
-                borderRadius: 9,
-                backgroundColor: s.bg,
-                border: `1px solid ${s.border}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: s.color,
-              }}>
-                {s.icon}
-              </div>
             </div>
             <p style={{ fontSize: '2rem', fontWeight: 700, color: s.color, margin: 0 }}>{s.value}</p>
           </div>
@@ -224,14 +226,15 @@ export default function DashboardHome({ user }) {
                       </p>
                       <span style={{
                         fontSize: '0.6875rem', padding: '2px 8px', borderRadius: 6,
-                        backgroundColor: sev.bg, border: `1px solid ${sev.border}`,
-                        color: sev.text, fontWeight: 600, flexShrink: 0,
+                        backgroundColor: s.isEmergency ? '#FEF2F2' : sev.bg, 
+                        border: `1px solid ${s.isEmergency ? '#DC2626' : sev.border}`,
+                        color: s.isEmergency ? '#DC2626' : sev.text, fontWeight: 600, flexShrink: 0,
                       }}>
-                        {sev.label}
+                        {s.isEmergency ? '🚨 SOS EMERGENCY' : `${sev.label} Severity`}
                       </span>
                     </div>
-                    <p style={{ color: '#94A3B8', fontSize: '0.75rem', margin: 0 }}>
-                      {(s.department || 'General').charAt(0).toUpperCase() + (s.department || 'general').slice(1)}{' '}
+                    <p style={{ color: s.isEmergency ? '#DC2626' : '#94A3B8', fontSize: '0.75rem', margin: 0, fontWeight: s.isEmergency ? 600 : 400 }}>
+                      {s.isEmergency ? 'Immediate Assistance Required' : `${(s.department || 'General').charAt(0).toUpperCase() + (s.department || 'general').slice(1)}`}
                       &middot; {s.channelName} &middot; {formatTime(s.createdAt)}
                     </p>
                   </div>

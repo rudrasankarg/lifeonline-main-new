@@ -9,12 +9,16 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && user) router.replace('/dashboard');
+    if (!loading && user) {
+      // Just a simple routing to dashboard. Dashboard layout or AuthContext can handle the check
+      // Or we can just route to profile-setup, and profile-setup will route to dashboard if they have a profile
+      router.replace('/profile-setup');
+    }
   }, [user, loading, router]);
 
   const handleGoogleSignIn = async () => {
     const result = await signInWithGoogle();
-    if (result) router.replace('/dashboard');
+    if (result) router.replace('/profile-setup');
   };
 
   if (loading) {

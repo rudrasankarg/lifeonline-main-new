@@ -48,7 +48,7 @@ async function chatWithGemini(userMessage, history = []) {
 /**
  * Analyses user symptoms and returns a triage assessment.
  * @param {string} symptoms - Free-text symptom description.
- * @returns {Promise<{severity: string, department: string, action: string, explanation: string}>}
+ * @returns {Promise<{severity: string, severity_score: number, recommended_specialty: string, action: string, explanation: string}>}
  */
 async function analyzeSymptoms(symptoms) {
   const model = getModel();
@@ -60,15 +60,16 @@ Symptoms: "${symptoms}"
 Return this exact JSON structure (no markdown, no extra text):
 {
   "severity": "low | medium | high",
-  "department": "general | cardiology | neurology | orthopedics | psychiatry | pediatrics | dermatology | emergency",
+  "severity_score": <number from 1 to 10>,
+  "recommended_specialty": "General | Cardiologist | Neurologist | Orthopedist | Psychiatrist | Pediatrician | Dermatologist | Emergency",
   "action": "chat | consult | video_call",
   "explanation": "brief 1-sentence reason"
 }
 
 Rules:
-- high severity → action must be "video_call"
-- medium severity → action must be "consult"
-- low severity → action must be "chat"`;
+- high severity (8-10) → action must be "video_call"
+- medium severity (4-7) → action must be "consult"
+- low severity (1-3) → action must be "chat"`;
 
   const result = await model.generateContent(prompt);
   const text = result.response.text().trim();
@@ -78,4 +79,20 @@ Rules:
   return JSON.parse(clean);
 }
 
-module.exports = { chatWithGemini, analyzeSymptoms };
+/**
+ * Provides immediate first-aid instructions based on the emergency context.
+ * @param {string} context - The context or symptoms during the SOS event.
+ */
+async function getEmergencyFirstAid(context = "Unknown emergency") {
+  const model = getModel();
+  const prompt = `You are an emergency medical AI. A user has triggered an SOS alert.
+Context/Symptoms: "${context}"
+
+Provide 3 very short, bulleted first-aid instructions the user should follow immediately while waiting for an ambulance or doctor.
+Keep it extremely concise and easy to read in a panic. No intro or outro text.`;
+
+  const result = await model.generateContent(prompt);
+  return result.response.text().trim();
+}
+
+module.exports = { chatWithGemini, analyzeSymptoms, getEmergencyFirstAid };

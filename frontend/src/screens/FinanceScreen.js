@@ -142,9 +142,6 @@ export default function FinanceScreen() {
         
         {/* Header */}
         <Animated.View style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-          <View style={styles.headerIconBox}>
-            <Text style={styles.headerIcon}>🛡️</Text>
-          </View>
           <View>
             <Text style={styles.headerTitle}>Finance Guard</Text>
             <Text style={styles.headerSub}>Advanced Threat Protection</Text>
@@ -155,11 +152,11 @@ export default function FinanceScreen() {
           {/* SMS Threat Scanner */}
           <View style={[styles.card, styles.premiumCard]}>
             <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>📱 Device Threat Scan</Text>
+              <Text style={styles.cardTitle}>Device Threat Scan</Text>
               <View style={styles.proBadge}><Text style={styles.proBadgeText}>PRO</Text></View>
             </View>
             <Text style={styles.cardDesc}>
-              Scan your inbox for predatory loan apps trying to trap you in high-interest debt cycles.
+              Scan your inbox for predatory medical loan apps and emergency payday loans trying to trap you in high-interest debt cycles during a health crisis.
             </Text>
 
             {smsScanActive ? (
@@ -201,7 +198,7 @@ export default function FinanceScreen() {
 
           {/* Manual Safety Scanner */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>🔍 Manual App Check</Text>
+            <Text style={styles.cardTitle}>Manual App Check</Text>
             <Text style={styles.cardDesc}>Enter details of a lender to verify their RBI registration status.</Text>
             
             <View style={styles.inputGroup}>
@@ -246,7 +243,7 @@ export default function FinanceScreen() {
 
           {/* EMI Calculator */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>🧮 EMI & Interest Calculator</Text>
+            <Text style={styles.cardTitle}>EMI & Interest Calculator</Text>
             <Text style={styles.cardDesc}>Calculate your monthly payments to avoid debt traps.</Text>
 
             <View style={styles.inputGroup}>
@@ -309,6 +306,27 @@ export default function FinanceScreen() {
                 </View>
               </View>
             )}
+          </View>
+
+          {/* Safe Borrowing Directory */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Safe Medical Loan Directory</Text>
+            <Text style={styles.cardDesc}>Verified, RBI-approved lenders for emergency medical expenses with low interest rates.</Text>
+            
+            <View style={{ marginBottom: 16 }}>
+              <View style={styles.lenderItem}>
+                <Text style={styles.lenderName}>Arogya Finance</Text>
+                <Text style={styles.lenderMeta}>Interest: 0% - 12% | Instant Approval</Text>
+              </View>
+              <View style={styles.lenderItem}>
+                <Text style={styles.lenderName}>SBI Sanjeevani</Text>
+                <Text style={styles.lenderMeta}>Interest: 10.5% | Govt. Backed</Text>
+              </View>
+              <View style={styles.lenderItem}>
+                <Text style={styles.lenderName}>CareCredit India</Text>
+                <Text style={styles.lenderMeta}>Interest: 12% - 15% | Partner Hospitals Only</Text>
+              </View>
+            </View>
           </View>
 
         </Animated.View>
@@ -406,5 +424,9 @@ const styles = StyleSheet.create({
   resultTitle: { fontSize: 16, fontWeight: '800', marginBottom: 8 },
   resultMsg: { color: '#334155', fontSize: 14, lineHeight: 22, marginBottom: 12 },
   resultMeta: { backgroundColor: 'rgba(0,0,0,0.04)', padding: 10, borderRadius: 8 },
-  resultMetaText: { color: '#475569', fontSize: 12, fontWeight: '600', textAlign: 'center' }
+  resultMetaText: { color: '#475569', fontSize: 12, fontWeight: '600', textAlign: 'center' },
+
+  lenderItem: { backgroundColor: '#F8FAFC', padding: 16, borderRadius: 12, marginBottom: 12, borderWidth: 1, borderColor: '#E2E8F0' },
+  lenderName: { color: '#0F172A', fontSize: 15, fontWeight: '700', marginBottom: 4 },
+  lenderMeta: { color: '#64748B', fontSize: 13, fontWeight: '500' }
 });

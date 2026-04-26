@@ -136,7 +136,7 @@ export default function SymptomsScreen({ navigation }) {
                 <Text style={styles.resultDept}>
                   Recommended:{' '}
                   <Text style={{ color: COLORS.textPrimary, fontWeight: '600' }}>
-                    {result.department.charAt(0).toUpperCase() + result.department.slice(1)}
+                    {result.recommended_specialty || result.department || 'General'}
                   </Text>
                 </Text>
               </View>
@@ -160,7 +160,7 @@ export default function SymptomsScreen({ navigation }) {
 
             <TouchableOpacity
               style={[styles.ctaBtn, { backgroundColor: sevConfig.color }]}
-              onPress={() => navigation.navigate(actConfig.screen, { department: result.department, severity: result.severity })}
+              onPress={() => navigation.navigate(actConfig.screen, { department: result.recommended_specialty || result.department || 'General', severity: result.severity, severity_score: result.severity_score })}
               activeOpacity={0.85}
             >
               <Text style={styles.ctaBtnText}>{actConfig.label}</Text>

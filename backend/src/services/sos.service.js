@@ -7,15 +7,18 @@ const { getFirestore } = require('../config/firebase');
  * @param {string} params.userId
  * @param {{ latitude: number, longitude: number }} params.location
  * @param {Array}  params.emergencyContacts
+ * @param {string} params.context
  * @returns {Promise<string>} Document ID of created event
  */
-async function createSOSEvent({ userId, location, emergencyContacts = [] }) {
+async function createSOSEvent({ userId, location, emergencyContacts = [], context = '' }) {
   const db = getFirestore();
 
   const event = {
     userId: userId || 'anonymous',
     location,
     emergencyContacts,
+    context,
+    isEmergency: true,
     status: 'active',
     createdAt: new Date().toISOString(),
   };

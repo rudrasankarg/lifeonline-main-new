@@ -97,7 +97,7 @@ export default function HomeScreen({ navigation }) {
   const cards = [
     {
       id: 'chat',
-      icon: '💬',
+      icon: '■',
       label: 'Talk to AI',
       sub: 'Instant health guidance',
       color: '#8B5CF6',
@@ -106,7 +106,7 @@ export default function HomeScreen({ navigation }) {
     },
     {
       id: 'symptoms',
-      icon: '🩺',
+      icon: '▲',
       label: 'Check Symptoms',
       sub: 'AI-powered triage',
       color: '#F59E0B',
@@ -115,7 +115,7 @@ export default function HomeScreen({ navigation }) {
     },
     {
       id: 'doctor',
-      icon: '👨‍⚕️',
+      icon: '◆',
       label: 'Find Doctor',
       sub: 'Match by specialty',
       color: '#10B981',
@@ -124,7 +124,7 @@ export default function HomeScreen({ navigation }) {
     },
     {
       id: 'video',
-      icon: '📹',
+      icon: '●',
       label: 'Video Call',
       sub: 'Connect instantly',
       color: '#F43F5E',
@@ -133,7 +133,7 @@ export default function HomeScreen({ navigation }) {
     },
     {
       id: 'finance',
-      icon: '🛡️',
+      icon: '⬟',
       label: 'Finance Guard',
       sub: 'Safe borrowing guide',
       color: '#0EA5E9',
@@ -142,7 +142,7 @@ export default function HomeScreen({ navigation }) {
     },
     {
       id: 'schedule',
-      icon: '📅',
+      icon: '◫',
       label: 'Book Appointment',
       sub: 'Schedule a visit',
       color: '#6366F1',
@@ -208,14 +208,11 @@ export default function HomeScreen({ navigation }) {
           {cards.map((card) => (
             <TouchableOpacity
               key={card.id}
-              style={styles.card}
+              style={[styles.card, { borderColor: '#E2E8F0' }]}
               onPress={() => navigation.navigate(card.screen)}
               activeOpacity={0.7}
             >
-              <View style={[styles.cardIconBox, { backgroundColor: card.bg }]}>
-                <Text style={styles.cardIcon}>{card.icon}</Text>
-              </View>
-              <Text style={styles.cardLabel}>{card.label}</Text>
+              <Text style={[styles.cardLabel, { color: '#0D9488' }]}>{card.label}</Text>
               <Text style={styles.cardSub}>{card.sub}</Text>
             </TouchableOpacity>
           ))}
@@ -223,9 +220,6 @@ export default function HomeScreen({ navigation }) {
 
         {/* Emergency tip */}
         <View style={styles.tipBox}>
-          <View style={styles.tipIconBox}>
-            <Text style={styles.tipIconText}>!</Text>
-          </View>
           <View style={styles.tipTextContainer}>
             <Text style={styles.tipTitle}>Medical Emergency?</Text>
             <Text style={styles.tipText}>
@@ -239,7 +233,7 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#F8FAFC' }, // Soft slate background
+  root: { flex: 1, backgroundColor: '#FFFFFF' },
   scroll: { padding: 24, paddingBottom: 60, paddingTop: 60 },
 
   header: {
@@ -248,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
-  greeting: { fontSize: 32, fontWeight: '800', color: '#0F172A', letterSpacing: -1 },
+  greeting: { fontSize: 32, fontWeight: '800', color: '#0D9488', letterSpacing: -1 },
   greetingDot: { color: '#0D9488' },
   subGreeting: { fontSize: 14, color: '#64748B', marginTop: 4, fontWeight: '500' },
   badge: {
