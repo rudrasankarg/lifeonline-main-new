@@ -9,7 +9,6 @@ service-account*.json
 google-credentials.json
 gcp-credentials.json
 
-private/
 # ── Editors & OS ──────────────────────────────────────────────────────────────
 .qodo
 .vscode/
