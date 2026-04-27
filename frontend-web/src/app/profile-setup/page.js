@@ -86,37 +86,37 @@ export default function ProfileSetupPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-      <div style={{ width: '100%', maxWidth: 480, backgroundColor: '#FFFFFF', padding: '2rem', borderRadius: 16, boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#0F172A' }}>Complete Your Profile</h1>
-        <p style={{ color: '#64748B', marginBottom: '2rem', fontSize: '0.875rem' }}>Please provide your medical credentials to continue.</p>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--background)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+      <div style={{ width: '100%', maxWidth: 480, backgroundColor: 'var(--surface)', padding: '2rem', borderRadius: 16, border: '1px solid var(--border)', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--foreground)' }}>Complete Your Profile</h1>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.875rem' }}>Please provide your medical credentials to continue.</p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#334155', marginBottom: '0.5rem' }}>Specialization</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Specialization</label>
             <select
               value={specialty}
               onChange={(e) => setSpecialty(e.target.value)}
-              style={{ width: '100%', padding: '0.75rem', borderRadius: 8, border: '1px solid #E2E8F0', fontSize: '0.9375rem' }}
+              style={{ width: '100%', padding: '0.75rem', borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--foreground)', fontSize: '0.9375rem' }}
             >
-              {SPECIALTIES.map(s => <option key={s} value={s}>{s}</option>)}
+              {SPECIALTIES.map(s => <option key={s} value={s} style={{ backgroundColor: 'var(--surface)', color: 'var(--foreground)' }}>{s}</option>)}
             </select>
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#334155', marginBottom: '0.5rem' }}>Medical ID / License Number</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Medical ID / License Number</label>
             <input
               type="text"
               required
               value={medicalId}
               onChange={(e) => setMedicalId(e.target.value)}
               placeholder="e.g. MED-123456"
-              style={{ width: '100%', padding: '0.75rem', borderRadius: 8, border: '1px solid #E2E8F0', fontSize: '0.9375rem', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '0.75rem', borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--foreground)', fontSize: '0.9375rem', boxSizing: 'border-box' }}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#334155', marginBottom: '0.5rem' }}>Years of Experience</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Years of Experience</label>
             <input
               type="number"
               required
@@ -124,7 +124,7 @@ export default function ProfileSetupPage() {
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
               placeholder="e.g. 10"
-              style={{ width: '100%', padding: '0.75rem', borderRadius: 8, border: '1px solid #E2E8F0', fontSize: '0.9375rem', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '0.75rem', borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--foreground)', fontSize: '0.9375rem', boxSizing: 'border-box' }}
             />
           </div>
 
@@ -133,8 +133,8 @@ export default function ProfileSetupPage() {
             disabled={saving}
             style={{
               marginTop: '1rem',
-              backgroundColor: '#0D9488',
-              color: '#FFF',
+              backgroundColor: 'var(--primary)',
+              color: 'var(--background)',
               padding: '0.875rem',
               borderRadius: 8,
               border: 'none',

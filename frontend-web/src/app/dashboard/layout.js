@@ -15,10 +15,10 @@ export default function DashboardLayout({ children }) {
 
   if (loading || !user) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--background)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{
           width: 32, height: 32,
-          border: '3px solid #0D9488',
+          border: '3px solid var(--primary)',
           borderTopColor: 'transparent',
           borderRadius: '50%',
           animation: 'spin 0.8s linear infinite',
@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#F1F5F9', display: 'flex' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--background)', display: 'flex' }}>
       <DashboardSidebar user={user} />
       <main style={{ flex: 1, overflowY: 'auto' }}>
         {children}

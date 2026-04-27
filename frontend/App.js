@@ -14,20 +14,25 @@ import FinanceScreen from './src/screens/FinanceScreen'; // Finance Guard [addit
 import { COLORS } from './src/theme';
 import './src/services/tracker';
 
+import SettingsScreen from './src/screens/SettingsScreen';
+import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
+
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+function AppNavigation() {
+  const { colors, isDark } = useTheme();
+
   return (
     <NavigationContainer>
-      <StatusBar style="dark" backgroundColor={COLORS.background} />
+      <StatusBar style={isDark ? "light" : "dark"} backgroundColor={colors.background} />
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
-          headerStyle: { backgroundColor: COLORS.surface },
-          headerTintColor: COLORS.textPrimary,
+          headerStyle: { backgroundColor: colors.surface },
+          headerTintColor: colors.textPrimary,
           headerTitleStyle: { fontWeight: '700', fontSize: 17 },
           headerShadowVisible: false,
-          contentStyle: { backgroundColor: COLORS.background },
+          contentStyle: { backgroundColor: colors.background },
           animation: 'slide_from_right',
         }}
       >
@@ -60,13 +65,25 @@ export default function App() {
             headerTintColor: '#fff',
           }}
         />
-        {/* Finance Guard [additive] */}
         <Stack.Screen
           name="Finance"
           component={FinanceScreen}
-          options={{ title: 'Finance Guard', headerTintColor: COLORS.primary }}
+          options={{ title: 'Finance Guard', headerTintColor: colors.primary }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{ title: 'Settings' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppNavigation />
+    </ThemeProvider>
   );
 }

@@ -14,8 +14,10 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import { triggerSOS } from '../services/api';
+import { useTheme } from '../theme/ThemeContext';
 
 export default function HomeScreen({ navigation }) {
+  const { colors, isDark } = useTheme();
   const [loading, setLoading] = useState(false);
   const [lastSOS, setLastSOS] = useState(null);
 
@@ -152,19 +154,24 @@ export default function HomeScreen({ navigation }) {
   ];
 
   return (
-    <View style={styles.root}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F8FAFC" />
+    <View style={[styles.root, { backgroundColor: colors.background }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background} />
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>lifeOnLine<Text style={styles.greetingDot}>.</Text></Text>
-            <Text style={styles.subGreeting}>Your health companion, 24/7</Text>
+            <Text style={[styles.greeting, { color: colors.primary }]}>lifeOnLine<Text style={styles.greetingDot}>.</Text></Text>
+            <Text style={[styles.subGreeting, { color: colors.textSecondary }]}>Your health companion, 24/7</Text>
           </View>
-          <View style={styles.badge}>
-            <View style={styles.dot} />
-            <Text style={styles.badgeText}>System Live</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <View style={[styles.badge, { backgroundColor: isDark ? colors.surface : '#ECFDF5', borderColor: isDark ? colors.border : '#A7F3D0' }]}>
+              <View style={[styles.dot, { backgroundColor: colors.success }]} />
+              <Text style={[styles.badgeText, { color: colors.success }]}>System Live</Text>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={{ padding: 8, backgroundColor: colors.surface, borderRadius: 8, borderWidth: 1, borderColor: colors.border }}>
+              <Text style={{ fontSize: 18 }}>⚙️</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -192,8 +199,8 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         {lastSOS && (
-          <View style={styles.sosConfirm}>
-            <Text style={styles.sosConfirmText}>
+          <View style={[styles.sosConfirm, { backgroundColor: colors.surface, borderColor: colors.success }]}>
+            <Text style={[styles.sosConfirmText, { color: colors.success }]}>
               ✅ Alert sent successfully. Ambulance (108) is being called.
             </Text>
           </View>
@@ -201,28 +208,28 @@ export default function HomeScreen({ navigation }) {
 
         {/* Action Cards */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Essential Services</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Essential Services</Text>
         </View>
 
         <View style={styles.cardGrid}>
           {cards.map((card) => (
             <TouchableOpacity
               key={card.id}
-              style={[styles.card, { borderColor: '#E2E8F0' }]}
+              style={[styles.card, { borderColor: colors.border, backgroundColor: colors.surface }]}
               onPress={() => navigation.navigate(card.screen)}
               activeOpacity={0.7}
             >
-              <Text style={[styles.cardLabel, { color: '#0D9488' }]}>{card.label}</Text>
-              <Text style={styles.cardSub}>{card.sub}</Text>
+              <Text style={[styles.cardLabel, { color: colors.primary }]}>{card.label}</Text>
+              <Text style={[styles.cardSub, { color: colors.textSecondary }]}>{card.sub}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
         {/* Emergency tip */}
-        <View style={styles.tipBox}>
+        <View style={[styles.tipBox, { backgroundColor: isDark ? colors.surface : '#FEF2F2', borderColor: isDark ? colors.border : '#FECACA' }]}>
           <View style={styles.tipTextContainer}>
-            <Text style={styles.tipTitle}>Medical Emergency?</Text>
-            <Text style={styles.tipText}>
+            <Text style={[styles.tipTitle, { color: isDark ? colors.danger : '#991B1B' }]}>Medical Emergency?</Text>
+            <Text style={[styles.tipText, { color: isDark ? colors.textSecondary : '#B91C1C' }]}>
               In case of severe chest pain, difficulty breathing, or stroke symptoms, press SOS immediately.
             </Text>
           </View>
@@ -233,7 +240,7 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#FFFFFF' },
+  root: { flex: 1 },
   scroll: { padding: 24, paddingBottom: 60, paddingTop: 60 },
 
   header: {
@@ -242,26 +249,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
-  greeting: { fontSize: 32, fontWeight: '800', color: '#0D9488', letterSpacing: -1 },
+  greeting: { fontSize: 32, fontWeight: '800', letterSpacing: -1 },
   greetingDot: { color: '#0D9488' },
-  subGreeting: { fontSize: 14, color: '#64748B', marginTop: 4, fontWeight: '500' },
+  subGreeting: { fontSize: 14, marginTop: 4, fontWeight: '500' },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ECFDF5',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
-    shadowColor: '#10B981',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
-  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#10B981', marginRight: 6 },
-  badgeText: { fontSize: 11, color: '#059669', fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase' },
+  dot: { width: 6, height: 6, borderRadius: 3, marginRight: 6 },
+  badgeText: { fontSize: 11, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase' },
 
   // SOS Redesign
   sosContainer: { alignItems: 'center', marginVertical: 30, height: 260, justifyContent: 'center' },
@@ -288,72 +292,41 @@ const styles = StyleSheet.create({
   sosSub: { fontSize: 9, color: '#FEE2E2', fontWeight: '800', letterSpacing: 1 },
 
   sosConfirm: {
-    backgroundColor: '#ECFDF5',
     borderRadius: 16,
     padding: 16,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#10B981',
   },
-  sosConfirmText: { color: '#065F46', fontSize: 14, textAlign: 'center', fontWeight: '700' },
+  sosConfirmText: { fontSize: 14, textAlign: 'center', fontWeight: '700' },
 
   sectionHeader: { marginBottom: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: '800', color: '#1E293B', letterSpacing: -0.5 },
+  sectionTitle: { fontSize: 18, fontWeight: '800', letterSpacing: -0.5 },
 
   // Polished Cards
   cardGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginBottom: 32 },
   card: {
     width: '48%',
-    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
-    shadowColor: '#94A3B8',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.08,
     shadowRadius: 16,
     elevation: 4,
   },
-  cardIconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  cardIcon: { fontSize: 24 },
-  cardLabel: { fontSize: 15, fontWeight: '800', color: '#0F172A', marginBottom: 4 },
-  cardSub: { fontSize: 12, color: '#64748B', fontWeight: '500', lineHeight: 16 },
+  cardLabel: { fontSize: 15, fontWeight: '800', marginBottom: 4 },
+  cardSub: { fontSize: 12, fontWeight: '500', lineHeight: 16 },
 
   // Emergency Tip Box
   tipBox: {
     flexDirection: 'row',
-    backgroundColor: '#FEF2F2',
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
-    borderColor: '#FECACA',
     alignItems: 'flex-start',
   },
-  tipIconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#EF4444',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-    shadowColor: '#EF4444',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  tipIconText: { color: '#fff', fontSize: 18, fontWeight: '900' },
   tipTextContainer: { flex: 1 },
-  tipTitle: { fontSize: 15, fontWeight: '800', color: '#991B1B', marginBottom: 4 },
-  tipText: { fontSize: 13, color: '#B91C1C', lineHeight: 20, fontWeight: '500' },
+  tipTitle: { fontSize: 15, fontWeight: '800', marginBottom: 4 },
+  tipText: { fontSize: 13, lineHeight: 20, fontWeight: '500' },
 });

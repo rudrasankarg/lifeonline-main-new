@@ -19,7 +19,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "lifeOnLine needs your location to send emergency services to you."
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "ios": {
       "supportsTablet": false,
