@@ -7,7 +7,7 @@
 ## 📁 Project Structure
 
 ```
-rudraForceHack2/
+Project/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
